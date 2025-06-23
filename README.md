@@ -1,17 +1,29 @@
-# OpenRefine変換ファイル - RCGS個別資料データ
+# OpenRefine変換ファイルの生成
 
 ## 概要
+RCGSコレクション https://collection.rcgs.jp/ のデータをMADBに登録可能なTSVに変換するためにOpenRefineの変換用JSONファイルを生成AIにより生成し、これを用いて変換した。
+
+## 変換に用いたアプリ
+- Cursor (claude-4-sonnet)
+
+## プロトコル
+cursor_openrefine.md の通り
+当初はOpenRefineで読み込める仕様のデータ作成に苦闘していたが、適切なファイルを読み込ませることで簡易に作成出来そうであることがわかった。
+
+## RCGS個別資料データの事例（以下はclaude-4-sonnetが生成した説明文より抜粋）
+
+### 概要
 このファイルは `rcgs_item_sparql_2022.csv` を対象とするOpenRefineの変換ファイルです。
 RCGSの個別資料データをMADBフォーマットに変換するために使用します。
 
-## 対象ファイル
+### 対象ファイル
 - 原データ: `rcgs_item_sparql_2022.csv`
 - マッピング仕様: `mappingspec_madb_game.csv` (通しNo: 1-6)
 - 変換先クラス: ゲーム個別資料
 
-## 変換内容
+### 変換内容
 
-### 列の変換・追加
+#### 列の変換・追加
 1. **s** → **メモ**: URIからIDを抽出 (`https://collection.rcgs.jp/resource/` を削除)
 2. **exemplarOf** → **例示されたパッケージ**: パッケージIDに変換
 3. **exemplarOf** → **所蔵DBリンク**: `/resource/` を `/page/` に置換
@@ -19,14 +31,14 @@ RCGSの個別資料データをMADBフォーマットに変換するために使
 5. **holdingAgent** → **管理者**: 責任主体IDに変換
 6. **identifiers** → **資料ID**: 複数値から「RCGSa」を含むIDのみ抽出
 
-### 固定値の追加
+#### 固定値の追加
 - **サブタイプ**: `gm`
 - **タイプ**: `GameItem`
 - **ジャンル**: `ゲーム個別資料`
 
-## 使用方法
+### 使用方法
 
-### 1. OpenRefineでプロジェクトを作成
+#### 1. OpenRefineでプロジェクトを作成
 ```
 1. OpenRefineを起動
 2. 「Create Project」→「Choose Files」
@@ -34,7 +46,7 @@ RCGSの個別資料データをMADBフォーマットに変換するために使
 4. プロジェクト名を設定して「Create Project」
 ```
 
-### 2. 変換ファイルの適用
+#### 2. 変換ファイルの適用
 ```
 1. 「Undo / Redo」タブをクリック
 2. 「Apply...」ボタンをクリック
@@ -42,7 +54,7 @@ RCGSの個別資料データをMADBフォーマットに変換するために使
 4. 「Perform Operations」をクリック
 ```
 
-### 3. 結果の確認
+#### 3. 結果の確認
 変換後、以下の列が生成されます：
 - メモ
 - 例示されたパッケージ
@@ -54,16 +66,16 @@ RCGSの個別資料データをMADBフォーマットに変換するために使
 - タイプ
 - ジャンル
 
-## 注意事項
+### 注意事項
 - `identifiers` 列の処理では、パイプ記号(|)で区切られた複数値から「RCGSa」を含むもののみを抽出します
 - URI形式のデータは適切にIDに変換されます
 - 元の列（s, exemplarOf, owns, holdingAgent, identifiers）は変換後に削除されます
 
-## トラブルシューティング
+### トラブルシューティング
 - 変換が失敗する場合は、原データのフォーマットを確認してください
 - 特に列名や区切り文字が仕様と異なる場合は、変換ファイルの修正が必要です
 
-## ファイル構成
+### ファイル構成
 ```
 openrefine_madb/
 ├── rcgs_item_transform.json     # 変換ファイル
