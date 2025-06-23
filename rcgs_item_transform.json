@@ -1,0 +1,165 @@
+[
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "subject",
+    "newColumnName": "メモ",
+    "description": "カラム subject を メモ に名前変更"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "メモ",
+    "expression": "value.replace(\"https://collection.rcgs.jp/resource/\", \"\")",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "式 value.replace(\"https://collection.rcgs.jp/resource/\", \"\") でカラム メモ のセルを変換"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "exemplarOf",
+    "expression": "value.replace(\"https://collection.rcgs.jp/resource/\", \"\")",
+    "onError": "set-to-blank",
+    "newColumnName": "例示されたパッケージ",
+    "columnInsertIndex": 1,
+    "description": "式 value.replace(\"https://collection.rcgs.jp/resource/\", \"\") を使いカラム exemplarOf に基づいてインデックス 1 にカラム 例示されたパッケージ を作成"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "例示されたパッケージ",
+    "expression": "if(cell.cross(\"package_mapping\", \"PACKAGE_ID\").length() > 0, cell.cross(\"package_mapping\", \"PACKAGE_ID\")[0].cells[\"MADB_ID\"].value, value)",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "式 if(cell.cross(\"package_mapping\", \"PACKAGE_ID\").length() > 0, cell.cross(\"package_mapping\", \"PACKAGE_ID\")[0].cells[\"MADB_ID\"].value, value) でカラム 例示されたパッケージ のセルを変換"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "exemplarOf",
+    "expression": "value.replace(\"/resource/\", \"/page/\")",
+    "onError": "set-to-blank",
+    "newColumnName": "所蔵DBリンク",
+    "columnInsertIndex": 2,
+    "description": "式 value.replace(\"/resource/\", \"/page/\") を使いカラム exemplarOf に基づいてインデックス 2 にカラム 所蔵DBリンク を作成"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "spatial",
+    "newColumnName": "保管場所",
+    "description": "カラム spatial を 保管場所 に名前変更"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "holdingAgent",
+    "expression": "value.replace(\"https://collection.rcgs.jp/resource/\", \"\")",
+    "onError": "set-to-blank",
+    "newColumnName": "管理者",
+    "columnInsertIndex": 4,
+    "description": "式 value.replace(\"https://collection.rcgs.jp/resource/\", \"\") を使いカラム holdingAgent に基づいてインデックス 4 にカラム 管理者 を作成"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "管理者",
+    "expression": "if(cell.cross(\"agent_mapping\", \"AGENT_ID\").length() > 0, cell.cross(\"agent_mapping\", \"AGENT_ID\")[0].cells[\"MADB_ID\"].value, value)",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "式 if(cell.cross(\"agent_mapping\", \"AGENT_ID\").length() > 0, cell.cross(\"agent_mapping\", \"AGENT_ID\")[0].cells[\"MADB_ID\"].value, value) でカラム 管理者 のセルを変換"
+  },
+  {
+    "op": "core/text-transform",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "columnName": "identifiers",
+    "expression": "forEach(value.split(\"|\"), v, if(v.contains(\"RCGSa\"), v, null)).join(\"|\").replace(\"null|\", \"\").replace(\"|null\", \"\").replace(\"null\", \"\")",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10,
+    "description": "式 forEach(value.split(\"|\"), v, if(v.contains(\"RCGSa\"), v, null)).join(\"|\").replace(\"null|\", \"\").replace(\"|null\", \"\").replace(\"null\", \"\") でカラム identifiers のセルを変換"
+  },
+  {
+    "op": "core/column-rename",
+    "oldColumnName": "identifiers",
+    "newColumnName": "資料ID",
+    "description": "カラム identifiers を 資料ID に名前変更"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "メモ",
+    "expression": "\"gm\"",
+    "onError": "set-to-blank",
+    "newColumnName": "サブタイプ",
+    "columnInsertIndex": 6,
+    "description": "式 \"gm\" を使いカラム メモ に基づいてインデックス 6 にカラム サブタイプ を作成"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "メモ",
+    "expression": "\"GameItem\"",
+    "onError": "set-to-blank",
+    "newColumnName": "タイプ",
+    "columnInsertIndex": 7,
+    "description": "式 \"GameItem\" を使いカラム メモ に基づいてインデックス 7 にカラム タイプ を作成"
+  },
+  {
+    "op": "core/column-addition",
+    "engineConfig": {
+      "facets": [],
+      "mode": "row-based"
+    },
+    "baseColumnName": "メモ",
+    "expression": "\"ゲーム個別資料\"",
+    "onError": "set-to-blank",
+    "newColumnName": "ジャンル",
+    "columnInsertIndex": 8,
+    "description": "式 \"ゲーム個別資料\" を使いカラム メモ に基づいてインデックス 8 にカラム ジャンル を作成"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "exemplarOf",
+    "description": "カラム exemplarOf を削除"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "owns",
+    "description": "カラム owns を削除"
+  },
+  {
+    "op": "core/column-removal",
+    "columnName": "holdingAgent",
+    "description": "カラム holdingAgent を削除"
+  }
+]
