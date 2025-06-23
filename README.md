@@ -1,14 +1,14 @@
 # OpenRefine変換ファイルの生成
 
 ## 概要
-RCGSコレクション https://collection.rcgs.jp/ のデータをMADBに登録可能なTSVに変換するためにOpenRefineの変換用JSONファイルを生成AIにより生成し、これを用いて変換した。
+RCGSコレクション https://collection.rcgs.jp/ のデータをMADBに登録可能なTSVに変換するためにOpenRefineの変換用JSONファイルを生成AIにより生成し、これを用いて変換した。簡易なデータセットを対象としたが、スケールする方法論だと思われる。マッピング仕様書の記述不足により変換がうまくいかないプロパティも発生すると思われるが、仕様書をアップデートするか、個別対応でなんとかなるだろう。
 
 ## 変換に用いたアプリ
 - Cursor (claude-4-sonnet)
 
 ## プロトコル
-cursor_openrefine.md の通り
-当初はOpenRefineで読み込める仕様のデータ作成に苦闘していたが、適切なファイルを読み込ませることで簡易に作成出来そうであることがわかった。
+cursor_openrefine.md を参照のこと。
+当初はOpenRefineで読み込める仕様のデータ作成に若干苦闘したが、適切なファイルを読み込ませることで簡易に作成出来た。所要時間は30minほど。
 
 ## RCGS個別資料データの事例（以下はclaude-4-sonnetが生成した説明文より抜粋）
 
